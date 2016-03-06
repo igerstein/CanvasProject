@@ -24,3 +24,18 @@ drawLine(0, 210, 490, 210);
 drawLine(0, 280, 490, 280);
 drawLine(0, 350, 490, 350);
 drawLine(0, 420, 490, 420);
+
+//Draws a token at the top of a column
+var drawToken = function(e){
+
+    var roundedX = Math.floor(e.clientX / 70) * 70 + 35;
+
+    ctx.clearRect(0, 0, 490, 70);
+    
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(roundedX, 35, 35, 0, Math.PI * 2);
+    ctx.fill();
+};
+
+canvas.addEventListener("mousemove", drawToken);
