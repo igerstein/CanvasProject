@@ -2,7 +2,25 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 ctx.strokeStyle = "black";
-ctx.beginPath();
-ctx.moveTo(70, 0);
-ctx.lineTo(70, 420);
-ctx.stroke();
+
+//Draws a line from a start point to an end point
+var drawLine = function(startX, startY, endX, endY){
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+};
+
+//Draw grid
+drawLine(70, 70, 70, 490);
+drawLine(140, 70, 140, 490);
+drawLine(210, 70, 210, 490);
+drawLine(280, 70, 280, 490);
+drawLine(350, 70, 350, 490);
+drawLine(420, 70, 420, 490);
+drawLine(0, 70, 490, 70);
+drawLine(0, 140, 490, 140);
+drawLine(0, 210, 490, 210);
+drawLine(0, 280, 490, 280);
+drawLine(0, 350, 490, 350);
+drawLine(0, 420, 490, 420);
