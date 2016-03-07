@@ -4,7 +4,7 @@ var ctx = canvas.getContext("2d");
 var turn = 0;
 var isFalling = false;
 
-//Stores the position of the tokens(0 = empty, 1 = red, 2 = yellow)
+//Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
 var tokens = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -60,7 +60,7 @@ var addToArray = function(col){
 
 //Draws a token at the top of a column
 var drawToken = function(e){
-    var x = Math.floor(e.clientX / 70) * 70 + 35;
+    var x = Math.floor(e.offsetX / 70) * 70 + 35;
 
     ctx.clearRect(0, 0, 490, 70);
     if (turn == 0){
@@ -86,7 +86,7 @@ var fall = function(e){
     if (!isFalling){
 	isFalling = true;
 	
-	var x = Math.floor(e.clientX / 70) * 70 + 35;
+	var x = Math.floor(e.offsetX / 70) * 70 + 35;
 	var y = 35;
 	
 	var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
@@ -112,7 +112,7 @@ var fall = function(e){
 		window.requestAnimationFrame(fallAnimation);
 	    }
 	    else{
-		//check if win
+		console.log(checkWinner());
 		isFalling = false;
 		if (turn == 0){
 		    turn = 1;
@@ -126,28 +126,36 @@ var fall = function(e){
 	fallAnimation(turn);
     }
 };
-// check thru array differnt ways to get horizontal, vertical diagonal
-// check left right for horizontal ways to win
-// check up donw for veritcla ways to win
-// check diagonal bottom right for diagonal ways to win
+
+//Checks to see if a winner exists
 var checkWinner = function(){
-    if (turn == 0){
-	var counter=0
-	for (var i = 0; i < tokens.length; i++){
-	    for (var col = 0; i < tokens[0].length; col++){
-		if (tokens[i][col] == 1){
-		    counter++;
+    for (var i = 0; i < tokens.length; i++){
+	for (var j = 0; j < tokens[i].length; j++){
+	    if (tokens[i][j] != 0){
+		if (j < tokens[i].length - 3){
+		    if (tokens[i][j] == tokens[i][j + 1] && tokens[i][j] == tokens[i][j + 2] && tokens[i][j] == tokens[i][j + 3]){
+			return tokens[i][j].toString() + "," + i.toString() + "," + j.toString() + ",right";
+		    }
 		}
-		else{
-		    counter=0;
+		if (i < tokens.length - 3){
+		    if (tokens[i][j] == tokens[i + 1][j] && tokens[i][j] == tokens[i + 2][j] && tokens[i][j] == tokens[i + 3][j]){
+			return tokens[i][j].toString() + "," + i.toString() + "," + j.toString() + ",down";
+		    }
 		}
-		if (counter == 4){
-		    return 1;
+		if (j < tokens[i].length - 3 && i < tokens.length - 3){
+		    if (tokens[i][j] == tokens[i + 1][j + 1] && tokens[i][j] == tokens[i + 2][j + 2] && tokens[i][j] == tokens[i + 3][j + 3]){
+			return tokens[i][j].toString() + "," + i.toString() + "," + j.toString() + ",down-right";
+		    }
+		}
+		if (j >= 3 && i < tokens.length - 3){
+		    if (tokens[i][j] == tokens[i + 1][j - 1] && tokens[i][j] == tokens[i + 2][j - 2] && tokens[i][j] == tokens[i + 3][j - 3]){
+			return tokens[i][j].toString() + "," + i.toString() + "," + j.toString() + ",down-left";
+		    }
 		}
 	    }
 	}
     }
-    return 0;
+    return "0";
 }
     
 
