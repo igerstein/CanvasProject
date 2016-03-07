@@ -1,7 +1,9 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+
 var turn = 0;
 var isFalling = false;
+
 //Stores the position of the tokens(0 = empty, 1 = red, 2 = yellow)
 var tokens = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -62,10 +64,17 @@ var drawToken = function(e){
 
     ctx.clearRect(0, 0, 490, 70);
     if (turn == 0){
-	ctx.fillStyle = "red";
-    }
-    else{
-	ctx.fillStyle = "yellow";
+	if (isFalling){
+	    ctx.fillStyle = "yellow";
+	}else{
+	    ctx.fillStyle = "red";
+	}
+    }else{
+	if (isFalling){
+	    ctx.fillStyle = "red";
+	}else{
+	    ctx.fillStyle = "yellow";
+	}
     }
     ctx.beginPath();
     ctx.arc(x, 35, 35, 0, Math.PI * 2);
@@ -73,53 +82,49 @@ var drawToken = function(e){
 };
 
 //Draws the token falling
-
 var fall = function(e){
-    if (isFalling == false){
-    isFalling = true;
-    var x = Math.floor(e.clientX / 70) * 70 + 35;
-    var y = 35;
-    
-    var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
-    console.log(turn);
-	console.log(tokens);
-    if (turn==0){
+    if (!isFalling){
+	isFalling = true;
 	
-	ctx.fillStyle = "red";
+	var x = Math.floor(e.clientX / 70) * 70 + 35;
+	var y = 35;
 	
-	}
-    else{
+	var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
 	
-	ctx.fillStyle = "yellow";
-	
-	}
-    var fallAnimation = function(){
-	
-	ctx.clearRect(x - 35, 0, 70, y + 35);
+	var fallAnimation = function(currentTurn){
+	    
+	    ctx.clearRect(x - 35, 0, 70, y + 35);
 
-	drawGrid();
-	ctx.beginPath();
-	ctx.arc(x, y, 35, 0, Math.PI * 2);
-	ctx.fill();
-
-	if (y < finalY){
-	    y += 10;
-	    window.requestAnimationFrame(fallAnimation);
-	}
-	else{
-	    //check if win
-	    //console.log(checkWinner());
-	    isFalling = false;
 	    if (turn == 0){
-		turn=1;
+		ctx.fillStyle = "red";  
 	    }
 	    else{
-		turn=0;
+		ctx.fillStyle = "yellow";  
 	    }
-	}
-    };
 
-    fallAnimation();}
+	    drawGrid();
+	    ctx.beginPath();
+	    ctx.arc(x, y, 35, 0, Math.PI * 2);
+	    ctx.fill();
+
+	    if (y < finalY){
+		y += 10;
+		window.requestAnimationFrame(fallAnimation);
+	    }
+	    else{
+		//check if win
+		isFalling = false;
+		if (turn == 0){
+		    turn = 1;
+		}
+		else{
+		    turn = 0;
+		}
+	    }
+	};
+
+	fallAnimation(turn);
+    }
 };
 // check thru array differnt ways to get horizontal, vertical diagonal
 // check left right for horizontal ways to win
