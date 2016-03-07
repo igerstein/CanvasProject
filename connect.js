@@ -15,10 +15,7 @@ var tokens = [
 ];
 
 //Draws a line from a start point to an end point
-var drawLine = function(startX, startY, endX, endY){
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
-    
+var drawLine = function(startX, startY, endX, endY){    
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
@@ -27,6 +24,9 @@ var drawLine = function(startX, startY, endX, endY){
 
 //Draws the grid
 var drawGrid = function(){
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    
     drawLine(70, 70, 70, 490);
     drawLine(140, 70, 140, 490);
     drawLine(210, 70, 210, 490);
@@ -112,8 +112,13 @@ var fall = function(e){
 		window.requestAnimationFrame(fallAnimation);
 	    }
 	    else{
-		console.log(checkWinner());
+		var winner = checkWinner();
+		if (winner != ""){
+		    highlightWinner(winner);
+		}
+		
 		isFalling = false;
+		
 		if (turn == 0){
 		    turn = 1;
 		}
@@ -125,6 +130,39 @@ var fall = function(e){
 
 	fallAnimation(turn);
     }
+};
+
+//Draws a line through the winning 4 tokens
+var highlightWinner = function(winner){
+    var winnerArray = winner.split(",");
+    var color = winnerArray[0];
+    var row = winnerArray[1];
+    var col = winnerArray[2];
+    var direction = winnerArray[3];
+
+    var startX = col * 70 + 35;
+    var startY = row * 70 + 105;
+
+    var endX;
+    var endY;
+    if (direction == "right"){
+	endX = startX + 210;
+	endY = startY;
+    }else if (direction == "down"){
+	endX = startX;
+	endY = startY + 210;
+    }else if (direction == "down-right"){
+	endX = startX + 210;
+	endY = startY + 210;
+    }else{
+	endX = startX - 210;
+	endY = startY + 210;
+    }
+    
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 5;
+
+    drawLine(startX, startY, endX, endY);
 };
 
 //Checks to see if a winner exists
@@ -155,9 +193,8 @@ var checkWinner = function(){
 	    }
 	}
     }
-    return "0";
-}
-    
+    return "";
+};
 
 canvas.addEventListener("mousemove", drawToken);
 canvas.addEventListener("click", fall);
