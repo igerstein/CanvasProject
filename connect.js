@@ -1,6 +1,7 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
+var turn = 0;
+var isFalling = false;
 //Stores the position of the tokens(0 = empty, 1 = red, 2 = yellow)
 var tokens = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -44,7 +45,12 @@ drawGrid();
 var addToArray = function(col){
     for (var i = 0; i < tokens.length; i++){
 	if (i == tokens.length - 1 || tokens[i + 1][col] != 0){
-	    tokens[i][col] = 1;
+	    if (turn == 0){
+		tokens[i][col] = 1;
+	    }
+	    else{
+		tokens[i][col] = 2;
+	    }
 	    return i;
 	}
     }
@@ -55,27 +61,43 @@ var drawToken = function(e){
     var x = Math.floor(e.clientX / 70) * 70 + 35;
 
     ctx.clearRect(0, 0, 490, 70);
-    
-    ctx.fillStyle = "red";
+    if (turn == 0){
+	ctx.fillStyle = "red";
+    }
+    else{
+	ctx.fillStyle = "yellow";
+    }
     ctx.beginPath();
     ctx.arc(x, 35, 35, 0, Math.PI * 2);
     ctx.fill();
 };
 
 //Draws the token falling
+
 var fall = function(e){
+    if (isFalling == false){
+    isFalling = true;
     var x = Math.floor(e.clientX / 70) * 70 + 35;
     var y = 35;
-
-    var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
     
+    var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
+    console.log(turn);
+	console.log(tokens);
+    if (turn==0){
+	
+	ctx.fillStyle = "red";
+	
+	}
+    else{
+	
+	ctx.fillStyle = "yellow";
+	
+	}
     var fallAnimation = function(){
 	
 	ctx.clearRect(x - 35, 0, 70, y + 35);
 
 	drawGrid();
-
-	ctx.fillStyle = "red";
 	ctx.beginPath();
 	ctx.arc(x, y, 35, 0, Math.PI * 2);
 	ctx.fill();
@@ -83,11 +105,45 @@ var fall = function(e){
 	if (y < finalY){
 	    y += 10;
 	    window.requestAnimationFrame(fallAnimation);
-	};
+	}
+	else{
+	    //check if win
+	    //console.log(checkWinner());
+	    isFalling = false;
+	    if (turn == 0){
+		turn=1;
+	    }
+	    else{
+		turn=0;
+	    }
+	}
     };
 
-    fallAnimation();
+    fallAnimation();}
 };
+// check thru array differnt ways to get horizontal, vertical diagonal
+// check left right for horizontal ways to win
+// check up donw for veritcla ways to win
+// check diagonal bottom right for diagonal ways to win
+var checkWinner = function(){
+    if (turn == 0){
+	var counter=0
+	for (var i = 0; i < tokens.length; i++){
+	    for (var col = 0; i < tokens[0].length; col++){
+		if (tokens[i][col] == 1){
+		    counter++;
+		}
+		else{
+		    counter=0;
+		}
+		if (counter == 4){
+		    return 1;
+		}
+	    }
+	}
+    }
+    return 0;
+}
     
 
 canvas.addEventListener("mousemove", drawToken);
