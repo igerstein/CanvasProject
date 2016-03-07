@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 
 var turn = 0;
 var isFalling = false;
+var gameFinished = false;
 
 //Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
 var tokens = [
@@ -83,52 +84,57 @@ var drawToken = function(e){
 
 //Draws the token falling
 var fall = function(e){
-    if (!isFalling){
-	isFalling = true;
-	
+    if (!isFalling && !gameFinished){
 	var x = Math.floor(e.offsetX / 70) * 70 + 35;
-	var y = 35;
 	
-	var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
-	
-	var fallAnimation = function(currentTurn){
+	if (tokens[0][Math.floor(x / 70)] == 0){
 	    
-	    ctx.clearRect(x - 35, 0, 70, y + 35);
-
-	    if (turn == 0){
-		ctx.fillStyle = "red";  
-	    }
-	    else{
-		ctx.fillStyle = "yellow";  
-	    }
-
-	    drawGrid();
-	    ctx.beginPath();
-	    ctx.arc(x, y, 35, 0, Math.PI * 2);
-	    ctx.fill();
-
-	    if (y < finalY){
-		y += 10;
-		window.requestAnimationFrame(fallAnimation);
-	    }
-	    else{
-		var winner = checkWinner();
-		if (winner != ""){
-		    highlightWinner(winner);
-		}
+	    isFalling = true;
+	    
+	    var y = 35;
+	    
+	    var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
+	    
+	    var fallAnimation = function(currentTurn){
 		
-		isFalling = false;
-		
+		ctx.clearRect(x - 35, 0, 70, y + 35);
+
 		if (turn == 0){
-		    turn = 1;
+		    ctx.fillStyle = "red";  
 		}
 		else{
-		    turn = 0;
+		    ctx.fillStyle = "yellow";  
 		}
-	    }
-	};
 
-	fallAnimation(turn);
+		drawGrid();
+		ctx.beginPath();
+		ctx.arc(x, y, 35, 0, Math.PI * 2);
+		ctx.fill();
+
+		if (y < finalY){
+		    y += 10;
+		    window.requestAnimationFrame(fallAnimation);
+		}
+		else{
+		    var winner = checkWinner();
+		    if (winner != ""){
+			gameFinished = true;
+			highlightWinner(winner);
+		    }
+		    
+		    isFalling = false;
+		    
+		    if (turn == 0){
+			turn = 1;
+		    }
+		    else{
+			turn = 0;
+		    }
+		}
+	    };
+
+	    fallAnimation(turn);
+	}
     }
 };
 
