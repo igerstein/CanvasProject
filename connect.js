@@ -4,7 +4,7 @@ var ctx = canvas.getContext("2d");
 var turn = 0;
 var isFalling = false;
 var gameFinished = false;
-
+var gameInProgress = false;
 //Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
 var tokens = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -24,6 +24,12 @@ var drawLine = function(startX, startY, endX, endY){
 };
 
 //Draws the grid
+var setup = function(){
+    ctx.font = "30px comic sans";
+    ctx.fillText("Click to Start",160,245);
+}
+setup();
+    
 var drawGrid = function(){
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
@@ -42,7 +48,7 @@ var drawGrid = function(){
     drawLine(0, 420, 490, 420);
 };
 
-drawGrid();
+//drawGrid();
 
 //Adds the token to the token array in the given column and returns the row
 var addToArray = function(col){
