@@ -1,19 +1,23 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-var turn = 0;
-var isFalling = false;
-var gameFinished = false;
-var gameInProgress = false;
+// make button to allow reset
+// button should call setup after winning
+// when person has won. cavnas is cleared and text of winner shown
+var turn;
+var isFalling;
+var gameFinished;
+var gameInProgress;
 //Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
-var tokens = [
+var tokens;
+/*var tokens = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
-];
+];*/
 
 //Draws a line from a start point to an end point
 var drawLine = function(startX, startY, endX, endY){    
@@ -23,14 +27,8 @@ var drawLine = function(startX, startY, endX, endY){
     ctx.stroke();
 };
 
-//Draws the grid
-var setup = function(){
-    ctx.font = "30px comic sans";
-    ctx.fillText("Click to Start",160,245);
-}
-setup();
-    
 var drawGrid = function(){
+    
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
     
@@ -47,6 +45,44 @@ var drawGrid = function(){
     drawLine(0, 350, 490, 350);
     drawLine(0, 420, 490, 420);
 };
+//Draws the grid
+var setup = function(){
+    ctx.clearRect(0,0,490,490);
+    tokens = [
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0]
+    ];
+    console.log("im being used");
+    turn = 0;
+    isFalling = false;
+    gameFinished = false;
+    gameInProgress = false;
+    drawGrid();
+}
+setup();
+ 
+/*var drawGrid = function(){
+    
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    
+    drawLine(70, 70, 70, 490);
+    drawLine(140, 70, 140, 490);
+    drawLine(210, 70, 210, 490);
+    drawLine(280, 70, 280, 490);
+    drawLine(350, 70, 350, 490);
+    drawLine(420, 70, 420, 490);
+    drawLine(0, 70, 490, 70);
+    drawLine(0, 140, 490, 140);
+    drawLine(0, 210, 490, 210);
+    drawLine(0, 280, 490, 280);
+    drawLine(0, 350, 490, 350);
+    drawLine(0, 420, 490, 420);
+};*/ 
 
 //drawGrid();
 
