@@ -2,23 +2,13 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var reset = document.getElementById("reset");
 var winnerText = document.getElementById("winner");
-// make button to allow reset
-// button should call setup after winning
-// when person has won. cavnas is cleared and text of winner shown
+
 var turn;
 var isFalling;
 var gameFinished;
 var gameInProgress;
-//Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
+
 var tokens;
-/*var tokens = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-];*/
 
 //Draws a line from a start point to an end point
 var drawLine = function(startX, startY, endX, endY){    
@@ -28,8 +18,8 @@ var drawLine = function(startX, startY, endX, endY){
     ctx.stroke();
 };
 
-var drawGrid = function(){
-    
+//Draws the grid
+var drawGrid = function(){  
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
     
@@ -46,9 +36,12 @@ var drawGrid = function(){
     drawLine(0, 350, 490, 350);
     drawLine(0, 420, 490, 420);
 };
-//Draws the grid
+
+//Sets up a new game
 var setup = function(){
     ctx.clearRect(0,0,490,490);
+    
+    //Stores the position of the tokens (0 = empty, 1 = red, 2 = yellow)
     tokens = [
 	[0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0],
@@ -57,35 +50,15 @@ var setup = function(){
 	[0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0]
     ];
-    console.log("im being used");
     turn = 0;
     isFalling = false;
     gameFinished = false;
     gameInProgress = false;
+    winnerText.innerHTML = "";
+    
     drawGrid();
 }
 setup();
- 
-/*var drawGrid = function(){
-    
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
-    
-    drawLine(70, 70, 70, 490);
-    drawLine(140, 70, 140, 490);
-    drawLine(210, 70, 210, 490);
-    drawLine(280, 70, 280, 490);
-    drawLine(350, 70, 350, 490);
-    drawLine(420, 70, 420, 490);
-    drawLine(0, 70, 490, 70);
-    drawLine(0, 140, 490, 140);
-    drawLine(0, 210, 490, 210);
-    drawLine(0, 280, 490, 280);
-    drawLine(0, 350, 490, 350);
-    drawLine(0, 420, 490, 420);
-};*/ 
-
-//drawGrid();
 
 //Adds the token to the token array in the given column and returns the row
 var addToArray = function(col){
@@ -130,16 +103,13 @@ var fall = function(e){
     if (!isFalling && !gameFinished){
 	var x = Math.floor(e.offsetX / 70) * 70 + 35;
 	
-	if (tokens[0][Math.floor(x / 70)] == 0){
-	    
+	if (tokens[0][Math.floor(x / 70)] == 0){	    
 	    isFalling = true;
 	    
-	    var y = 35;
-	    
+	    var y = 35;	    
 	    var finalY = addToArray(Math.floor(x / 70)) * 70 + 105;
 	    
-	    var fallAnimation = function(currentTurn){
-		
+	    var fallAnimation = function(currentTurn){		
 		ctx.clearRect(x - 35, 0, 70, y + 35);
 
 		if (turn == 0){
@@ -170,10 +140,8 @@ var fall = function(e){
 			else{
 			    winnerText.innerHTML = "YELLOW IS THE WINNER";
 			}
-		    }
-		    
-		    isFalling = false;
-		    
+		    }		    
+		    isFalling = false;		    
 		    if (turn == 0){
 			turn = 1;
 		    }
@@ -254,4 +222,4 @@ var checkWinner = function(){
 
 canvas.addEventListener("mousemove", drawToken);
 canvas.addEventListener("click", fall);
-reset.addEventListener("click",setup);
+reset.addEventListener("click", setup);
