@@ -1,6 +1,7 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
+var reset = document.getElementById("reset");
+var winnerText = document.getElementById("winner");
 // make button to allow reset
 // button should call setup after winning
 // when person has won. cavnas is cleared and text of winner shown
@@ -162,6 +163,13 @@ var fall = function(e){
 		    if (winner != ""){
 			gameFinished = true;
 			highlightWinner(winner);
+			console.log(winner);
+			if (winner.split(",")[0]=="1"){
+			    winnerText.innerHTML = "RED IS THE WINNER";
+			}
+			else{
+			    winnerText.innerHTML = "YELLOW IS THE WINNER";
+			}
 		    }
 		    
 		    isFalling = false;
@@ -246,3 +254,4 @@ var checkWinner = function(){
 
 canvas.addEventListener("mousemove", drawToken);
 canvas.addEventListener("click", fall);
+reset.addEventListener("click",setup);
