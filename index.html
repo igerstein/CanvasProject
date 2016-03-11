@@ -3,12 +3,30 @@
   <head>
     <title>Connect 4</title>
   </head>
+  <style>
+    #rightSide{
+    width:800px;
+    height:400px;
+    float:right;
+    padding:5px;
+    text-align:center;
+    background-color:#eeeeee;
+    }
+  </style>
   <body>
     <h2>Connect 4</h2>
     <canvas id="canvas" height="490px" width="490px" style="border:1px solid  black;"></canvas>
-    <br><br>
+    <div id="rightSide">
     <button type="button" id="reset">Restart</button>
+    
     <p id="winner"></p>
+    Red:<p id="redWins">0</p>
+    Yellow:<p id="yellowWins">0</p>
+    <u>Instructions</u>
+    <ul>Click on column to drop down circle piece</ul>
+    <ul>Red starts first</ul>
+    <ul>Whenever 4 red or yellow pieces form a hoizontal, vertical, or diagonal line, that color wins</ul>
+    </div>
   </body>
   <script src="connect.js"></script>
 </html>

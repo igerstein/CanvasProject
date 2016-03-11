@@ -2,7 +2,8 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var reset = document.getElementById("reset");
 var winnerText = document.getElementById("winner");
-
+var redWins = document.getElementById("redWins");
+var yellowWins = document.getElementById("yellowWins");
 var turn;
 var isFalling;
 var gameFinished;
@@ -136,9 +137,13 @@ var fall = function(e){
 			console.log(winner);
 			if (winner.split(",")[0]=="1"){
 			    winnerText.innerHTML = "RED IS THE WINNER";
+			    holder = parseInt(redWins.innerHTML);
+			    redWins.innerHTML = holder+1;
 			}
 			else{
 			    winnerText.innerHTML = "YELLOW IS THE WINNER";
+			    holder = parseInt(yellowWins.innerHTML);
+			    yellowWins.innerHTML = holder+1;
 			}
 		    }		    
 		    isFalling = false;		    
